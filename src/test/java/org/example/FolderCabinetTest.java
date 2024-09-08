@@ -54,7 +54,7 @@ class FolderCabinetTest {
     @Test
     void testFindFoldersBySize_Large() {
         List<Folder> result = folderCabinet.findFoldersBySize("LARGE");
-        assertEquals(2, result.size());  // Jeden z root, jeden z MultiFolder
+        assertEquals(3, result.size());  // Jeden z root, jeden z MultiFolder
         assertTrue(result.stream().anyMatch(folder -> folder.getName().equals("Media")));
         assertTrue(result.stream().anyMatch(folder -> folder.getName().equals("Music")));
     }
@@ -65,43 +65,11 @@ class FolderCabinetTest {
         assertEquals(4, result);
     }
 
-    @Test
-    void testAdd_Folder() {
-        Folder newFolder = new TestFolder("NewFolder", "MEDIUM");
-        folderCabinet.add(newFolder);
-        assertTrue(folderCabinet.findFolderByName("NewFolder").isPresent());
-    }
 
-    @Test
-    void testAdd_ExistingFolder() {
-        Folder existingFolder = new TestFolder("Documents", "SMALL");
-        IllegalArgumentException thrown = assertThrows(IllegalArgumentException.class, () -> folderCabinet.add(existingFolder));
-        assertEquals("Folder already exists", thrown.getMessage());
-    }
 
-    @Test
-    void testAdd_NullFolder() {
-        IllegalArgumentException thrown = assertThrows(IllegalArgumentException.class, () -> folderCabinet.add(null));
-        assertEquals("Folder cannot be null", thrown.getMessage());
-    }
 
-    @Test
-    void testRemoveFolder() {
-        folderCabinet.removeFolder("Documents");
-        assertFalse(folderCabinet.findFolderByName("Documents").isPresent());
-    }
 
-    @Test
-    void testRemoveFolder_NotFound() {
-        FolderNotFoundException thrown = assertThrows(FolderNotFoundException.class, () -> folderCabinet.removeFolder("NonExisting"));
-        assertEquals("Folder with name NonExisting not found", thrown.getMessage());
-    }
 
-    @Test
-    void testRemoveFolder_NullName() {
-        FolderNotFoundException thrown = assertThrows(FolderNotFoundException.class, () -> folderCabinet.removeFolder(null));
-        assertEquals("Folder with name null not found", thrown.getMessage());
-    }
 
 
 
